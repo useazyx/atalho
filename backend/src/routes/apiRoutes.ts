@@ -1,0 +1,34 @@
+/**
+ * apiRoutes.ts - O mapa das rotas da API (todas debaixo de /api)
+ * # Pra que serve?
+ * - Registrar todos os grupos de rota num lugar só (tipo o índice de um livro)
+ * - Ter a rota de saúde, que serve pra saber se a API tá de pé
+ * - Ficar em /api porque a raiz do domínio é dos links curtos (/abc1234)
+ * Feito por: Arthur Roberto Weege Pontes
+ * Versão: 1.0.0
+ * Data: 2026-09-11
+ * Alterações:
+ * - v1.0.0 (2026-09-11): Implementação inicial com o /health
+ */
+
+import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
+import { z } from "zod"
+
+const HEALTH_RESPONSE_SCHEMA = z.object({
+  status: z.literal("ok"),
+})
+
+export const apiRoutes: FastifyPluginAsyncZod = async (app) => {
+  // Rota de saúde: se respondeu, a API tá viva
+  app.get(
+    "/health",
+    {
+      schema: {
+        tags: ["Health"],
+        summary: "Confere se a API está de pé",
+        response: { 200: HEALTH_RESPONSE_SCHEMA },
+      },
+    },
+    async () => ({ status: "ok" as const })
+  )
+}
