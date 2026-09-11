@@ -1,5 +1,12 @@
 // schema.prisma - O mapa do banco do Atalho
-// Os models entram na modelagem.
+// # Pra que serve?
+// - Guardar os links curtos de cada pessoa (slug, destino, validade, ativo ou não)
+// - Registrar cada clique com o que interessa pra estatística, sem guardar IP
+// Feito por: Arthur Roberto Weege Pontes
+// Versão: 1.0.0
+// Data: 2026-09-11
+// Alterações:
+// - v1.0.0 (2026-09-11): Primeira modelagem
 
 generator client {
   provider = "prisma-client-js"
@@ -8,4 +15,62 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum DeviceType {
+  DESKTOP
+  MOBILE
+  TABLET
+  BOT
+  UNKNOWN
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now()) @db.Timestamptz(3)
+  updated_at    DateTime @updatedAt @db.Timestamptz(3)
+
+  links Link[]
+
+  @@map("users")
+}
+
+// O link curto: /slug leva pro target_url enquanto estiver ativo e dentro da validade
+model Link {
+  id         String    @id @default(uuid())
+  user_id    String
+  slug       String    @unique
+  target_url String
+  title      String?
+  active     Boolean   @default(true)
+  expires_at DateTime? @db.Timestamptz(3)
+  created_at DateTime  @default(now()) @db.Timestamptz(3)
+  updated_at DateTime  @updatedAt @db.Timestamptz(3)
+
+  user   User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  clicks Click[]
+
+  @@index([user_id, created_at])
+  @@map("links")
+}
+
+// Um clique. visitor_hash junta IP + navegador + dia num hash com sal: dá pra contar visitante único,
+// mas não dá pra voltar pro IP (e ele nunca é gravado)
+model Click {
+  id            BigInt     @id @default(autoincrement())
+  link_id       String
+  clicked_at    DateTime   @default(now()) @db.Timestamptz(3)
+  referrer_host String?
+  device        DeviceType
+  browser       String
+  language      String?
+  visitor_hash  String
+
+  link Link @relation(fields: [link_id], references: [id], onDelete: Cascade)
+
+  @@index([link_id, clicked_at])
+  @@map("clicks")
 }
