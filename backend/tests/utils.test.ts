@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import { parseUserAgent, primaryLanguage, referrerHost, visitorHash } from "../src/utils/clickContext.js"
 import { ALIAS_REGEX, generateSlug, isReservedSlug, SLUG_LENGTH } from "../src/utils/slug.js"
 import { checkTargetUrl } from "../src/utils/targetUrl.js"
-import { localDay } from "../src/utils/timeZone.js"
+import { addDays, listDays, localDay } from "../src/utils/timeZone.js"
 
 const UA = {
   chromeWindows:
@@ -80,6 +80,13 @@ describe("time zone", () => {
 
     expect(localDay(lateNightInSaoPaulo)).toBe("2026-09-11")
     expect(localDay(lateNightInSaoPaulo, "UTC")).toBe("2026-09-12")
+  })
+
+  it("adds days across month and year boundaries and lists a period", () => {
+    expect(addDays("2026-12-31", 1)).toBe("2027-01-01")
+    expect(addDays("2026-03-01", -1)).toBe("2026-02-28")
+    expect(listDays("2026-09-29", "2026-10-02")).toEqual(["2026-09-29", "2026-09-30", "2026-10-01", "2026-10-02"])
+    expect(listDays("2026-09-02", "2026-09-01")).toEqual([])
   })
 })
 
