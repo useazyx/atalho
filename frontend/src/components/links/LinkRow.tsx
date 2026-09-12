@@ -1,3 +1,4 @@
+import { CornerDownRight } from "lucide-react"
 import { Link as RouterLink } from "react-router"
 import { formatDate, formatNumber, hostOf, withoutProtocol } from "../../lib/format"
 import type { Link } from "../../lib/types"
@@ -25,10 +26,10 @@ export function LinkRow({ link, onError }: LinkRowProps) {
             <LinkStatusBadge status={link.status} />
           </div>
           <p className="mt-1 truncate font-mono text-[13px] text-ink">{withoutProtocol(link.short_url)}</p>
-          <p className="mt-0.5 truncate text-[13px] text-ink-muted" title={link.target_url}>
-            <span aria-hidden>↳ </span>
+          <p className="mt-0.5 flex min-w-0 items-center gap-1 text-[13px] text-ink-muted" title={link.target_url}>
+            <CornerDownRight aria-hidden className="size-3.5 shrink-0" />
             <span className="sr-only">Destino: </span>
-            {withoutProtocol(link.target_url)}
+            <span className="truncate">{withoutProtocol(link.target_url)}</span>
           </p>
         </div>
 
