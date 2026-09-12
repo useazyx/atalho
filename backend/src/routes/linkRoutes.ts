@@ -3,13 +3,14 @@
  * # Pra que serve?
  * - Criar, listar, buscar, alterar e apagar links de quem está logado
  * - Criação com rate limit próprio (contra quem quer usar o Atalho pra espalhar spam)
- * - Estatísticas de cada link
+ * - Estatísticas e QR code de cada link
  * Feito por: Arthur Roberto Weege Pontes
- * Versão: 1.1.0
+ * Versão: 1.2.0
  * Data: 2026-09-12
  * Alterações:
  * - v1.0.0 (2026-09-11): Implementação inicial
  * - v1.1.0 (2026-09-12): GET /:id/stats
+ * - v1.2.0 (2026-09-12): GET /:id/qr
  */
 
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
@@ -18,6 +19,7 @@ import { DeleteLinkController } from "../controllers/links/DeleteLinkController.
 import { GetLinkController } from "../controllers/links/GetLinkController.js"
 import { ListLinksController } from "../controllers/links/ListLinksController.js"
 import { UpdateLinkController } from "../controllers/links/UpdateLinkController.js"
+import { GetLinkQrController } from "../controllers/qr/GetLinkQrController.js"
 import { GetLinkStatsController } from "../controllers/stats/GetLinkStatsController.js"
 import { CREATE_LINK_RATE_LIMIT } from "../plugins/security.js"
 import {
@@ -28,6 +30,7 @@ import {
   LIST_LINKS_QUERY_SCHEMA,
   UPDATE_LINK_BODY_SCHEMA,
 } from "../schemas/linkSchemas.js"
+import { LINK_QR_QUERY_SCHEMA } from "../schemas/qrSchemas.js"
 import { LINK_STATS_QUERY_SCHEMA, LINK_STATS_SCHEMA } from "../schemas/statsSchemas.js"
 
 const TAGS = ["Links"]
@@ -93,6 +96,20 @@ export const linkRoutes: FastifyPluginAsyncZod = async (app) => {
       },
     },
     (req, rep) => new GetLinkStatsController().handle(req, rep)
+  )
+
+  app.get(
+    "/:id/qr",
+    {
+      schema: {
+        tags: TAGS,
+        summary: "QR code do endereço curto, em SVG (padrão) ou PNG",
+        security: SECURITY,
+        params: LINK_ID_PARAMS_SCHEMA,
+        querystring: LINK_QR_QUERY_SCHEMA,
+      },
+    },
+    (req, rep) => new GetLinkQrController().handle(req, rep)
   )
 
   app.patch(
