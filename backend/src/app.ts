@@ -2,14 +2,15 @@
  * app.ts - Monta a aplicação Fastify com tudo plugado, mas sem abrir porta
  * # Pra que serve?
  * - Criar a instância do Fastify com o Zod cuidando da validação das rotas
- * - Plugar segurança, tratamento de erro e as rotas da API em /api
+ * - Plugar segurança, tratamento de erro, as rotas da API em /api e o redirect dos links na raiz
  * - Ficar separado do server.ts pra os testes conseguirem usar a API sem subir servidor
  * Feito por: Arthur Roberto Weege Pontes
- * Versão: 1.1.0
- * Data: 2026-09-11
+ * Versão: 1.2.0
+ * Data: 2026-09-12
  * Alterações:
  * - v1.0.0 (2026-09-11): Implementação inicial
  * - v1.1.0 (2026-09-11): Plugin de autenticação (JWT)
+ * - v1.2.0 (2026-09-12): Redirect dos links curtos em /:slug
  */
 
 import Fastify from "fastify"
@@ -20,6 +21,7 @@ import { errorHandler } from "./errors/errorHandler.js"
 import { authPlugin } from "./plugins/auth.js"
 import { securityPlugin } from "./plugins/security.js"
 import { apiRoutes } from "./routes/apiRoutes.js"
+import { redirectRoutes } from "./routes/redirectRoutes.js"
 
 export const API_PREFIX = "/api"
 
@@ -61,6 +63,8 @@ export async function buildApp({ rateLimit = env.NODE_ENV !== "test" }: BuildApp
   await app.register(authPlugin)
 
   await app.register(apiRoutes, { prefix: API_PREFIX })
+  // Na raiz: /abc1234. Rota fixa (/api/..., /docs) sempre ganha de rota com parâmetro no Fastify
+  await app.register(redirectRoutes)
 
   // Quando a API desliga, fecha a conexão com o banco também
   app.addHook("onClose", async () => {

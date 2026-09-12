@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import { parseUserAgent, primaryLanguage, referrerHost, visitorHash } from "../src/utils/clickContext.js"
 import { ALIAS_REGEX, generateSlug, isReservedSlug, SLUG_LENGTH } from "../src/utils/slug.js"
 import { checkTargetUrl } from "../src/utils/targetUrl.js"
+import { localDay } from "../src/utils/timeZone.js"
 
 const UA = {
   chromeWindows:
@@ -70,6 +71,15 @@ describe("click context", () => {
     expect(monday).not.toBe(nextDay)
     expect(monday).not.toContain("200.1.2.3")
     expect(monday).toHaveLength(32)
+  })
+})
+
+describe("time zone", () => {
+  it("puts a late night click in the local day, not the UTC one", () => {
+    const lateNightInSaoPaulo = new Date("2026-09-12T01:30:00.000Z")
+
+    expect(localDay(lateNightInSaoPaulo)).toBe("2026-09-11")
+    expect(localDay(lateNightInSaoPaulo, "UTC")).toBe("2026-09-12")
   })
 })
 
