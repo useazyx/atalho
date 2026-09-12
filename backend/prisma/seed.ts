@@ -7,9 +7,9 @@
  * - Rodar em todo `npm run dev` sem duplicar nada e sem apagar clique que alguém fez testando
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.0.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
- * - v1.0.0 (2026-09-12): Implementação inicial
+ * - v1.0.0 (2026-09-11): Implementação inicial
  *
  * Como rodar:
  *   npx prisma db seed

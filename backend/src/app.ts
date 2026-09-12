@@ -6,12 +6,12 @@
  * - Ficar separado do server.ts pra os testes conseguirem usar a API sem subir servidor
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.3.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
  * - v1.0.0 (2026-09-11): Implementação inicial
  * - v1.1.0 (2026-09-11): Plugin de autenticação (JWT)
- * - v1.2.0 (2026-09-12): Redirect dos links curtos em /:slug
- * - v1.3.0 (2026-09-12): Documentação OpenAPI gerada dos schemas, com a tela em /docs
+ * - v1.2.0 (2026-09-11): Redirect dos links curtos em /:slug
+ * - v1.3.0 (2026-09-11): Documentação OpenAPI gerada dos schemas, com a tela em /docs
  */
 
 import swagger from "@fastify/swagger"

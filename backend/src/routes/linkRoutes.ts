@@ -6,11 +6,11 @@
  * - Estatísticas e QR code de cada link
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.2.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
  * - v1.0.0 (2026-09-11): Implementação inicial
- * - v1.1.0 (2026-09-12): GET /:id/stats
- * - v1.2.0 (2026-09-12): GET /:id/qr
+ * - v1.1.0 (2026-09-11): GET /:id/stats
+ * - v1.2.0 (2026-09-11): GET /:id/qr
  */
 
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"

@@ -5,9 +5,9 @@
  * - Descrever o que sai: totais, comparação com o período anterior, série por dia e os rankings
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.0.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
- * - v1.0.0 (2026-09-12): Implementação inicial
+ * - v1.0.0 (2026-09-11): Implementação inicial
  */
 
 import { z } from "zod"

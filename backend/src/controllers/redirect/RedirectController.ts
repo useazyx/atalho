@@ -6,9 +6,9 @@
  * - Link que não funciona: página legível no navegador, JSON pra quem pediu JSON
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.0.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
- * - v1.0.0 (2026-09-12): Implementação inicial
+ * - v1.0.0 (2026-09-11): Implementação inicial
  */
 
 import type { FastifyReply, FastifyRequest } from "fastify"

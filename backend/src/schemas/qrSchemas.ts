@@ -5,9 +5,9 @@
  * - Limitar o tamanho do PNG (ninguém precisa de QR code de 10 mil pixels, e o servidor agradece)
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.0.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
- * - v1.0.0 (2026-09-12): Implementação inicial
+ * - v1.0.0 (2026-09-11): Implementação inicial
  */
 
 import { z } from "zod"

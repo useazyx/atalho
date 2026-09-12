@@ -6,10 +6,10 @@
  * - Fazer conta com dias no formato AAAA-MM-DD (somar dias, listar um período inteiro)
  * Feito por: Arthur Roberto Weege Pontes
  * Versão: 1.1.0
- * Data: 2026-09-12
+ * Data: 2026-09-11
  * Alterações:
- * - v1.0.0 (2026-09-12): Implementação inicial
- * - v1.1.0 (2026-09-12): addDays e listDays pras estatísticas
+ * - v1.0.0 (2026-09-11): Implementação inicial
+ * - v1.1.0 (2026-09-11): addDays e listDays pras estatísticas
  */
 
 export const STATS_TIME_ZONE = "America/Sao_Paulo"
