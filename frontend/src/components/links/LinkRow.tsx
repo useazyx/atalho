@@ -1,13 +1,19 @@
 import { Link as RouterLink } from "react-router"
 import { formatDate, formatNumber, hostOf, withoutProtocol } from "../../lib/format"
 import type { Link } from "../../lib/types"
+import { LinkRowActions } from "./LinkRowActions"
 import { LinkStatusBadge } from "./LinkStatusBadge"
 
-// Uma linha da lista: o que o link é (título ou domínio), o endereço curto, pra onde vai e quantos cliques teve
-export function LinkRow({ link }: { link: Link }) {
+interface LinkRowProps {
+  link: Link
+  onError: (message: string) => void
+}
+
+// Uma linha da lista: o que o link é (título ou domínio), o endereço curto, pra onde vai, os cliques e as ações
+export function LinkRow({ link, onError }: LinkRowProps) {
   return (
-    <li className="border-t border-border first:border-t-0">
-      <div className="grid gap-x-6 gap-y-2 px-4 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
+    <li className="border-t border-border transition-colors first:border-t-0 hover:bg-surface-raised">
+      <div className="grid gap-x-6 gap-y-3 px-4 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
         <div className="min-w-0">
           <div className="flex min-w-0 items-center gap-2">
             <RouterLink
@@ -26,12 +32,15 @@ export function LinkRow({ link }: { link: Link }) {
           </p>
         </div>
 
-        <div className="flex items-center gap-4 text-sm sm:justify-end">
-          <p className="text-ink-secondary">
-            <span className="tabular font-semibold text-ink">{formatNumber(link.total_clicks)}</span>{" "}
-            {link.total_clicks === 1 ? "clique" : "cliques"}
-          </p>
-          <p className="text-ink-muted">{formatDate(link.created_at)}</p>
+        <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 sm:justify-end">
+          <div className="flex items-center gap-4 text-sm">
+            <p className="text-ink-secondary">
+              <span className="tabular font-semibold text-ink">{formatNumber(link.total_clicks)}</span>{" "}
+              {link.total_clicks === 1 ? "clique" : "cliques"}
+            </p>
+            <p className="hidden text-ink-muted lg:block">{formatDate(link.created_at)}</p>
+          </div>
+          <LinkRowActions link={link} onError={onError} />
         </div>
       </div>
     </li>
