@@ -18,5 +18,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
     css: false,
+    // O primeiro teste do detalhe importa o Recharts sob demanda, e no jsdom isso passa fácil de 5s
+    testTimeout: 30_000,
   },
 })
