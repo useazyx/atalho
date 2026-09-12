@@ -5,16 +5,24 @@
  * - Plugar segurança, tratamento de erro, as rotas da API em /api e o redirect dos links na raiz
  * - Ficar separado do server.ts pra os testes conseguirem usar a API sem subir servidor
  * Feito por: Arthur Roberto Weege Pontes
- * Versão: 1.2.0
+ * Versão: 1.3.0
  * Data: 2026-09-12
  * Alterações:
  * - v1.0.0 (2026-09-11): Implementação inicial
  * - v1.1.0 (2026-09-11): Plugin de autenticação (JWT)
  * - v1.2.0 (2026-09-12): Redirect dos links curtos em /:slug
+ * - v1.3.0 (2026-09-12): Documentação OpenAPI gerada dos schemas, com a tela em /docs
  */
 
+import swagger from "@fastify/swagger"
+import swaggerUi from "@fastify/swagger-ui"
 import Fastify from "fastify"
-import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from "fastify-type-provider-zod"
+import {
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+  type ZodTypeProvider,
+} from "fastify-type-provider-zod"
 import { env } from "./config/env.js"
 import { prisma } from "./config/prisma.js"
 import { errorHandler } from "./errors/errorHandler.js"
@@ -24,6 +32,7 @@ import { apiRoutes } from "./routes/apiRoutes.js"
 import { redirectRoutes } from "./routes/redirectRoutes.js"
 
 export const API_PREFIX = "/api"
+export const DOCS_ROUTE = "/docs"
 
 // O que dá pra ligar/desligar na hora de montar a API
 interface BuildAppOptions {
@@ -61,6 +70,22 @@ export async function buildApp({ rateLimit = env.NODE_ENV !== "test" }: BuildApp
   // Segurança antes das rotas, senão o rate limit não enxerga elas
   await app.register(securityPlugin, { rateLimit })
   await app.register(authPlugin)
+
+  // A documentação sai dos mesmos schemas Zod que validam as rotas (não tem como ficar desatualizada)
+  await app.register(swagger, {
+    openapi: {
+      info: {
+        title: "Atalho API",
+        description: "Encurtador de links com estatísticas de clique (sem guardar IP) e QR code",
+        version: "1.0.0",
+      },
+      components: {
+        securitySchemes: { bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" } },
+      },
+    },
+    transform: jsonSchemaTransform,
+  })
+  await app.register(swaggerUi, { routePrefix: DOCS_ROUTE })
 
   await app.register(apiRoutes, { prefix: API_PREFIX })
   // Na raiz: /abc1234. Rota fixa (/api/..., /docs) sempre ganha de rota com parâmetro no Fastify
