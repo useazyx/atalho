@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/*
+ * Cores do Atalho: ferramenta técnica, então fundo neutro, texto grafite e o botão principal escuro.
+ * Azul só onde é interação (link, foco) e nos gráficos (as duas primeiras cores da paleta validada).
+ * Status (ativo, desativado, expirado) sempre com ícone e texto junto da cor.
+ */
+@theme {
+  --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --color-page: #f9f9f7;
+  --color-surface: #fcfcfb;
+  --color-surface-raised: #ffffff;
+  --color-border: rgba(11, 11, 11, 0.1);
+  --color-border-strong: rgba(11, 11, 11, 0.2);
+  --color-grid: #e1e0d9;
+  --color-ink: #0b0b0b;
+  --color-ink-secondary: #52514e;
+  --color-ink-muted: #6f6d68;
+
+  --color-primary: #1b1b1a;
+  --color-primary-hover: #3a3a38;
+  --color-on-primary: #ffffff;
+  --color-link: #1c5cab;
+  --color-focus: #2a78d6;
+
+  --color-success: #006300;
+  --color-success-bg: #e7f3e7;
+  --color-warning: #8a5a00;
+  --color-warning-bg: #fdf3dc;
+  --color-danger: #b42f2f;
+  --color-danger-bg: #fbe9e9;
+
+  --color-series-1: #2a78d6;
+  --color-series-2: #eb6834;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-page: #0d0d0d;
+    --color-surface: #1a1a19;
+    --color-surface-raised: #222220;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-strong: rgba(255, 255, 255, 0.2);
+    --color-grid: #2c2c2a;
+    --color-ink: #ffffff;
+    --color-ink-secondary: #c3c2b7;
+    --color-ink-muted: #9a9892;
+
+    /* No escuro o botão principal inverte: claro sobre fundo escuro */
+    --color-primary: #f2f2ef;
+    --color-primary-hover: #d9d9d4;
+    --color-on-primary: #0b0b0b;
+    --color-link: #6da7ec;
+    --color-focus: #3987e5;
+
+    --color-success: #0ca30c;
+    --color-success-bg: #142514;
+    --color-warning: #fab219;
+    --color-warning-bg: #2e2410;
+    --color-danger: #e66767;
+    --color-danger-bg: #331b1b;
+
+    --color-series-1: #3987e5;
+    --color-series-2: #d95926;
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Números em coluna precisam alinhar os dígitos */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
